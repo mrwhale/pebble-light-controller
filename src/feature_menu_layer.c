@@ -82,7 +82,7 @@ static void menu_draw_header_callback(GContext* ctx, const Layer *cell_layer, ui
 
 static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuIndex *cell_index, void *data) {
   // Determine which section we're going to draw in
-      // Use the row to specify which item we'll draw
+      // Use the row to specify which item we'll draw      
       switch (cell_index->row) {
         case 0:
           // This is a basic menu item with a title and subtitle
@@ -131,45 +131,55 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
   // Use the row to specify which item will receive the select action
    DictionaryIterator* dictionaryIterator = NULL;
    app_message_outbox_begin (&dictionaryIterator);
-   dict_write_uint8 (dictionaryIterator, 1, 0);
-   // dict_write_cstring (dictionaryIterator, 1, "ABCD-1234"); // this fails!
-   dict_write_end (dictionaryIterator);
-   app_message_outbox_send ();
+   APP_LOG(APP_LOG_LEVEL_INFO, "cell_index %d", cell_index->row);
+   
   switch (cell_index->row) {
     // This is the menu item with the cycling icon
     case 0:
       //send command to phone to toggle colour zone 0
+       dict_write_uint8 (dictionaryIterator, 1, 0);
       break;
     case 1:
       // Send command to phone to toggle colour zone 1
+       dict_write_uint8 (dictionaryIterator, 1, 1);
       break;
     case 2:
       //send command to phone to toggle colour zone 2
+       dict_write_uint8 (dictionaryIterator, 1, 2);
       break;
     case 3:
       //send command to phone to toggle colour zone 3
+       dict_write_uint8 (dictionaryIterator, 1, 3);
       break;
     case 4:
       //send command to phone to toggle colour zone 4
+       dict_write_uint8 (dictionaryIterator, 1, 4);
       break;
     case 5:
       //send command to phone to toggle white zone 0
+       dict_write_uint8 (dictionaryIterator, 1, 5);
       break;
     case 6:
       //send command to phone to toggle white zone 1
+       dict_write_uint8 (dictionaryIterator, 1, 6);
       break;
     case 7:
       //send command to phone to toggle white zone 2
+       dict_write_uint8 (dictionaryIterator, 1, 7);
       break;
     case 8:
       //send command to phone to toggle white zone 3
+       dict_write_uint8 (dictionaryIterator, 1, 8);
       break;
     case 9:
       //send command to phone to toggle white zone 4
-      
-      break;
-  }
+       dict_write_uint8 (dictionaryIterator, 1, 9);
+    break;
 
+  }
+    
+   dict_write_end (dictionaryIterator);
+   app_message_outbox_send ();
 }
 
 static void main_window_load(Window *window) {

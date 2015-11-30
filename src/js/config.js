@@ -3,8 +3,9 @@
 //  auth: Matthew Clark, SetPebble
 
 // change this token for your project
-var setPebbleToken = '3T74';
 
+var setPebbleToken = '3T74';
+/*
 Pebble.addEventListener('ready', function(e) {
 });
 Pebble.addEventListener('appmessage', function(e) {
@@ -31,7 +32,7 @@ Pebble.addEventListener('appmessage', function(e) {
   }
 });
 Pebble.addEventListener('showConfiguration', function(e) {
-  Pebble.openURL('http://x.SetPebble.com/' + setPebbleToken + '/' + Pebble.getAccountToken());
+  Pebble.openURL('http://x.SetPebble.com/api/' + setPebbleToken + '/' + Pebble.getAccountToken());
 });
 Pebble.addEventListener('webviewclosed', function(e) {
   if ((typeof(e.response) == 'string') && (e.response.length > 0)) {
@@ -41,9 +42,9 @@ Pebble.addEventListener('webviewclosed', function(e) {
     } catch(e) {
     }
   }
-});
+});*/
 
-/*var initialized = false;
+var initialized = false;
 var options = {};
 
 Pebble.addEventListener("ready", function() {
@@ -66,6 +67,6 @@ Pebble.addEventListener("webviewclosed", function(e) {
   } else {
     console.log("Cancelled");
   }
-});*/
+});
 
 
