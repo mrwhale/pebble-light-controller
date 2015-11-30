@@ -3,6 +3,7 @@
 //  auth: Matthew Clark, SetPebble
 
 // change this token for your project
+var settings = require('settings');
 
 var setPebbleToken = '3T74';
 /*
@@ -54,7 +55,8 @@ Pebble.addEventListener("ready", function() {
 
 Pebble.addEventListener("showConfiguration", function() {
   console.log("showing configuration");
-  Pebble.openURL('http://assets.getpebble.com.s3-website-us-east-1.amazonaws.com/pebble-js/configurable.html?'+encodeURIComponent(JSON.stringify(options)));
+  //Pebble.openURL('http://assets.getpebble.com.s3-website-us-east-1.amazonaws.com/pebble-js/configurable.html?'+encodeURIComponent(JSON.stringify(options)));
+  Pebble.openURL('http://rssreader.no-ip.org:5091/configuration.html?'+encodeURIComponent(JSON.stringify(options)));
 });
 
 Pebble.addEventListener("webviewclosed", function(e) {
@@ -64,6 +66,7 @@ Pebble.addEventListener("webviewclosed", function(e) {
   if (e.response.charAt(0) == "{" && e.response.slice(-1) == "}" && e.response.length > 5) {
     options = JSON.parse(decodeURIComponent(e.response));
     console.log("Options = " + JSON.stringify(options));
+    localStorage.setItem(setPebbleToken, e.response);
   } else {
     console.log("Cancelled");
   }
