@@ -4,8 +4,8 @@
 //#define NUM_MENU_ICONS 3
 #define NUM_FIRST_MENU_ITEMS 5
 #define NUM_SECOND_MENU_ITEMS 5
-#define KEY_TEMPERATURE 0
-#define KEY_CONDITIONS 1
+#define KEY_IP 0
+#define KEY_PORT 1
 static TextLayer *s_weather_layer;
 
 static Window *s_main_window;
@@ -13,24 +13,28 @@ static MenuLayer *s_menu_layer;
 //static GBitmap *s_menu_icons[NUM_MENU_ICONS];
 static GBitmap *s_background_bitmap;
 static int s_current_icon = 0;
+enum Settings { setting_screen = 1, setting_date, setting_vibrate };
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   // Store incoming information
-  static char temperature_buffer[8];
-  static char conditions_buffer[32];
+  static char ip_buffer[8];
+  static char port_buffer[32];
   static char weather_layer_buffer[32];
 
   // Read tuples for data
-  Tuple *temp_tuple = dict_find(iterator, KEY_TEMPERATURE);
-  Tuple *conditions_tuple = dict_find(iterator, KEY_CONDITIONS);
-
+  Tuple *ip_tuple = dict_find(iterator, KEY_IP);
+  Tuple *port_tuple = dict_find(iterator, KEY_PORT);
+  
+  APP_LOG(1, "Data received %dC", KEY_IP);
+  APP_LOG(1, "port received %dC", KEY_PORT);
+  
   // If all data is available, use it
-  if(temp_tuple && conditions_tuple) {
-    snprintf(temperature_buffer, sizeof(temperature_buffer), "%dC", (int)temp_tuple->value->int32);
-    snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", conditions_tuple->value->cstring);
+  if(ip_tuple && port_tuple) {
+    snprintf(ip_buffer, sizeof(ip_buffer), "%dC", (int)ip_tuple->value->int32);
+    snprintf(port_buffer, sizeof(port_buffer), "%dC", (int)port_tuple->value->int32);
 
     // Assemble full string and display
-    snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", temperature_buffer, conditions_buffer);
+    snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", ip_buffer, port_buffer);
     text_layer_set_text(s_weather_layer, weather_layer_buffer);
   }
 }

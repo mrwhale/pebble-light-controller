@@ -3,22 +3,35 @@
 //  auth: Matthew Clark, SetPebble
 
 // change this token for your project
-var settings = require('settings');
+//var settings = require('settings');
 
 var setPebbleToken = '3T74';
-/*
-Pebble.addEventListener('ready', function(e) {
-});
+var ip = '10';
+var port = '1234';
+
 Pebble.addEventListener('appmessage', function(e) {
   var key = e.payload.action;
   if (typeof(key) != 'undefined') {
     var settings = localStorage.getItem(setPebbleToken);
     if (typeof(settings) == 'string') {
       try {
-        Pebble.sendAppMessage(JSON.parse(settings));
+        var options = {
+          'KEY_IP' : ip,
+          'KEY_PORT' : port
+        };
+        Pebble.sendAppMessage(options,
+  function(e) {
+    console.log('Weather info sent to Pebble successfully!');
+  },
+  function(e) {
+    console.log('Error sending weather info to Pebble!');
+  }
+);
       } catch (e) {
+        console.log ("didnt send :(");
       }
     }
+    /*
     var request = new XMLHttpRequest();
     request.open('GET', 'http://x.SetPebble.com/api/' + setPebbleToken + '/' + Pebble.getAccountToken(), true);
     request.onload = function(e) {
@@ -29,9 +42,11 @@ Pebble.addEventListener('appmessage', function(e) {
           } catch (e) {
           }
     }
-    request.send(null);
+    request.send(null); */
   }
 });
+/*
+
 Pebble.addEventListener('showConfiguration', function(e) {
   Pebble.openURL('http://x.SetPebble.com/api/' + setPebbleToken + '/' + Pebble.getAccountToken());
 });
@@ -43,7 +58,8 @@ Pebble.addEventListener('webviewclosed', function(e) {
     } catch(e) {
     }
   }
-});*/
+}); 
+*/
 
 var initialized = false;
 var options = {};
@@ -67,6 +83,22 @@ Pebble.addEventListener("webviewclosed", function(e) {
     options = JSON.parse(decodeURIComponent(e.response));
     console.log("Options = " + JSON.stringify(options));
     localStorage.setItem(setPebbleToken, e.response);
+
+    var cheese = {
+          'KEY_IP': '10',
+          'KEY_PORT': '1234'
+        };
+        console.log("ip is:" + ip);
+    console.log("port is:" + port);
+        Pebble.sendAppMessage(cheese,
+  function(e) {
+    console.log('Weather info sent to Pebble successfully!');
+  },
+  function(e) {
+    console.log('Error sending weather info to Pebble!');
+  }
+);
+    
   } else {
     console.log("Cancelled");
   }
