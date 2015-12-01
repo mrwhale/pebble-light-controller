@@ -6,6 +6,7 @@
 #define NUM_SECOND_MENU_ITEMS 5
 #define KEY_IP 0
 #define KEY_PORT 1
+#define KEY_CMD 2
 static TextLayer *s_weather_layer;
 
 static Window *s_main_window;
@@ -39,8 +40,6 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     // Assemble full string and display
     //snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", ip_buffer, port_buffer);
     //text_layer_set_text(s_weather_layer, weather_layer_buffer);
-     APP_LOG(1, "ip buffer received %s", ip_buffer);
-     APP_LOG(1, "port buffer received %s", port_buffer);
   //}
 }
 
@@ -140,7 +139,7 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
   // Use the row to specify which item will receive the select action
    DictionaryIterator* dictionaryIterator = NULL;
    app_message_outbox_begin (&dictionaryIterator);
-  APP_LOG(APP_LOG_LEVEL_INFO, "cell_section %d", cell_index->section);
+   APP_LOG(APP_LOG_LEVEL_INFO, "cell_section %d", cell_index->section);
    APP_LOG(APP_LOG_LEVEL_INFO, "cell_index %d", cell_index->row);
   
   switch (cell_index->section){
@@ -149,23 +148,23 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
       // This is the menu item with the cycling icon
       case 0:
         //send command to phone to toggle colour zone 0
-         dict_write_uint8 (dictionaryIterator, 1, 0);
+         dict_write_uint8 (dictionaryIterator, 2, 0);
         break;
       case 1:
         // Send command to phone to toggle colour zone 1
-         dict_write_uint8 (dictionaryIterator, 1, 1);
+         dict_write_uint8 (dictionaryIterator, 2, 1);
         break;
       case 2:
         //send command to phone to toggle colour zone 2
-         dict_write_uint8 (dictionaryIterator, 1, 2);
+         dict_write_uint8 (dictionaryIterator, 2, 2);
         break;
       case 3:
         //send command to phone to toggle colour zone 3
-         dict_write_uint8 (dictionaryIterator, 1, 3);
+         dict_write_uint8 (dictionaryIterator, 2, 3);
         break;
       case 4:
         //send command to phone to toggle colour zone 4
-         dict_write_uint8 (dictionaryIterator, 1, 4);
+         dict_write_uint8 (dictionaryIterator, 2, 4);
          break;
       }
     break;
@@ -173,23 +172,23 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
     switch (cell_index->row){
       case 0:
         //send command to phone to toggle white zone 0
-         dict_write_uint8 (dictionaryIterator, 1, 5);
+         dict_write_uint8 (dictionaryIterator, 2, 5);
         break;
       case 1:
         //send command to phone to toggle white zone 1
-         dict_write_uint8 (dictionaryIterator, 1, 6);
+         dict_write_uint8 (dictionaryIterator, 2, 6);
         break;
       case 2:
         //send command to phone to toggle white zone 2
-         dict_write_uint8 (dictionaryIterator, 1, 7);
+         dict_write_uint8 (dictionaryIterator, 2, 7);
         break;
       case 3:
         //send command to phone to toggle white zone 3
-         dict_write_uint8 (dictionaryIterator, 1, 8);
+         dict_write_uint8 (dictionaryIterator, 2, 8);
         break;
       case 4:
         //send command to phone to toggle white zone 4
-         dict_write_uint8 (dictionaryIterator, 1, 9);
+         dict_write_uint8 (dictionaryIterator, 2, 9);
       break;
      }
     break;

@@ -1,8 +1,9 @@
 {
     "appKeys": {
-	"KEY_IP": 0,
-	"KEY_PORT":1
-	},
+        "KEY_CMD": 2,
+        "KEY_IP": 0,
+        "KEY_PORT": 1
+    },
     "capabilities": [
         "configurable"
     ],
