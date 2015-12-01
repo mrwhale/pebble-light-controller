@@ -17,8 +17,8 @@ enum Settings { setting_screen = 1, setting_date, setting_vibrate };
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   // Store incoming information
-  static int32 ip_buffer;
-  static int32 port_buffer;
+  static char ip_buffer[8];
+  static char port_buffer[32];
   static char weather_layer_buffer[32];
 
   // Read tuples for data
@@ -27,6 +27,10 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   
   APP_LOG(1, "Data received %d", KEY_IP);
   APP_LOG(1, "port received %d", KEY_PORT);
+  APP_LOG(1, "port tuple received %s", port_tuple->value->cstring);
+  APP_LOG(1, "ptuple %d", (int)ip_tuple->value->int32);
+  
+  
   
   // If all data is available, use it
   //if(ip_tuple && port_tuple) {
@@ -36,8 +40,8 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     // Assemble full string and display
     //snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", ip_buffer, port_buffer);
     //text_layer_set_text(s_weather_layer, weather_layer_buffer);
-     APP_LOG(1, "ip buffer received %d", ip_buffer->value->int32);
-     APP_LOG(1, "port received %s", port_buffer->value->int32);
+     APP_LOG(1, "ip buffer received %s", ip_buffer);
+     APP_LOG(1, "port buffer received %s", port_buffer);
   //}
 }
 
