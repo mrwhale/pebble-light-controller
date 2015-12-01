@@ -1,6 +1,5 @@
 
-//  file: pebble-js-app.js
-//  auth: Matthew Clark, SetPebble
+//  file: config.js
 
 // change this token for your project
 //var settings = require('settings');
@@ -11,10 +10,10 @@ var options = {};
 //var options = Settings.option();
 
 
-
+/*
 Pebble.addEventListener('appmessage', function(e) {
   var key = e.payload.action; 
-  /*if (typeof(key) != 'undefined') {
+  if (typeof(key) != 'undefined') {
     var settings = localStorage.getItem(setPebbleToken);
     if (typeof(settings) == 'string') {
         var ip = '10.1.1.15';
@@ -33,8 +32,8 @@ Pebble.addEventListener('appmessage', function(e) {
 );
     }
 
-  } */
-});
+  } 
+}); */
 
 /*
 Pebble.addEventListener('showConfiguration', function(e) {
