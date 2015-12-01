@@ -14,8 +14,8 @@ Pebble.addEventListener('appmessage', function(e) {
     var settings = localStorage.getItem(setPebbleToken);
     if (typeof(settings) == 'string') {
       try {
-        var ip = '11';
-        var port = '12';
+        var ip = '10.1.1.15';
+        var port = '8899';
         var options = {
           'KEY_IP' : ip,
           'KEY_PORT' : port
