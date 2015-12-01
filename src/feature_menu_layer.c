@@ -17,26 +17,28 @@ enum Settings { setting_screen = 1, setting_date, setting_vibrate };
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   // Store incoming information
-  static char ip_buffer[8];
-  static char port_buffer[32];
+  static int32 ip_buffer;
+  static int32 port_buffer;
   static char weather_layer_buffer[32];
 
   // Read tuples for data
   Tuple *ip_tuple = dict_find(iterator, KEY_IP);
   Tuple *port_tuple = dict_find(iterator, KEY_PORT);
   
-  APP_LOG(1, "Data received %dC", KEY_IP);
-  APP_LOG(1, "port received %dC", KEY_PORT);
+  APP_LOG(1, "Data received %d", KEY_IP);
+  APP_LOG(1, "port received %d", KEY_PORT);
   
   // If all data is available, use it
-  if(ip_tuple && port_tuple) {
+  //if(ip_tuple && port_tuple) {
     snprintf(ip_buffer, sizeof(ip_buffer), "%dC", (int)ip_tuple->value->int32);
     snprintf(port_buffer, sizeof(port_buffer), "%dC", (int)port_tuple->value->int32);
 
     // Assemble full string and display
-    snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", ip_buffer, port_buffer);
-    text_layer_set_text(s_weather_layer, weather_layer_buffer);
-  }
+    //snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", ip_buffer, port_buffer);
+    //text_layer_set_text(s_weather_layer, weather_layer_buffer);
+     APP_LOG(1, "ip buffer received %d", ip_buffer->value->int32);
+     APP_LOG(1, "port received %s", port_buffer->value->int32);
+  //}
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {

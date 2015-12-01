@@ -6,8 +6,7 @@
 //var settings = require('settings');
 
 var setPebbleToken = '3T74';
-var ip = '10';
-var port = '1234';
+
 
 Pebble.addEventListener('appmessage', function(e) {
   var key = e.payload.action;
@@ -15,6 +14,8 @@ Pebble.addEventListener('appmessage', function(e) {
     var settings = localStorage.getItem(setPebbleToken);
     if (typeof(settings) == 'string') {
       try {
+        var ip = '11';
+        var port = '12';
         var options = {
           'KEY_IP' : ip,
           'KEY_PORT' : port
@@ -83,10 +84,11 @@ Pebble.addEventListener("webviewclosed", function(e) {
     options = JSON.parse(decodeURIComponent(e.response));
     console.log("Options = " + JSON.stringify(options));
     localStorage.setItem(setPebbleToken, e.response);
-
+    var ip = '15';
+    var port = '16';
     var cheese = {
-          'KEY_IP': '10',
-          'KEY_PORT': '1234'
+          'KEY_IP': ip,
+          'KEY_PORT': port
         };
         console.log("ip is:" + ip);
     console.log("port is:" + port);
