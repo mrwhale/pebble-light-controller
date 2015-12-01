@@ -25,10 +25,9 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   Tuple *ip_tuple = dict_find(iterator, KEY_IP);
   Tuple *port_tuple = dict_find(iterator, KEY_PORT);
   
-  APP_LOG(1, "Data received %d", KEY_IP);
-  APP_LOG(1, "port received %d", KEY_PORT);
-  APP_LOG(1, "port tuple received %s", port_tuple->value->cstring);
-  APP_LOG(1, "ptuple %d", (int)ip_tuple->value->int32);
+  APP_LOG(1, "ip tuple from js %s", ip_tuple->value->cstring);
+  APP_LOG(1, "port tuple received from js %s", port_tuple->value->cstring);
+  
   
   
   

@@ -5,15 +5,18 @@
 // change this token for your project
 //var settings = require('settings');
 
-var setPebbleToken = '3T74';
+var initialized = false;
+var options = {};
+//var Settings = require('settings');
+//var options = Settings.option();
+
 
 
 Pebble.addEventListener('appmessage', function(e) {
-  var key = e.payload.action;
-  if (typeof(key) != 'undefined') {
+  var key = e.payload.action; 
+  /*if (typeof(key) != 'undefined') {
     var settings = localStorage.getItem(setPebbleToken);
     if (typeof(settings) == 'string') {
-      try {
         var ip = '10.1.1.15';
         var port = '8899';
         var options = {
@@ -28,26 +31,12 @@ Pebble.addEventListener('appmessage', function(e) {
     console.log('Error sending weather info to Pebble!');
   }
 );
-      } catch (e) {
-        console.log ("didnt send :(");
-      }
     }
-    /*
-    var request = new XMLHttpRequest();
-    request.open('GET', 'http://x.SetPebble.com/api/' + setPebbleToken + '/' + Pebble.getAccountToken(), true);
-    request.onload = function(e) {
-      if (request.readyState == 4)
-        if (request.status == 200)
-          try {
-            Pebble.sendAppMessage(JSON.parse(request.responseText));
-          } catch (e) {
-          }
-    }
-    request.send(null); */
-  }
-});
-/*
 
+  } */
+});
+
+/*
 Pebble.addEventListener('showConfiguration', function(e) {
   Pebble.openURL('http://x.SetPebble.com/api/' + setPebbleToken + '/' + Pebble.getAccountToken());
 });
@@ -62,12 +51,12 @@ Pebble.addEventListener('webviewclosed', function(e) {
 }); 
 */
 
-var initialized = false;
-var options = {};
+
 
 Pebble.addEventListener("ready", function() {
   console.log("ready called!");
   initialized = true;
+  console.log("Hrere is ip :" + localStorage.getItem('ip'));
 });
 
 Pebble.addEventListener("showConfiguration", function() {
@@ -83,9 +72,10 @@ Pebble.addEventListener("webviewclosed", function(e) {
   if (e.response.charAt(0) == "{" && e.response.slice(-1) == "}" && e.response.length > 5) {
     options = JSON.parse(decodeURIComponent(e.response));
     console.log("Options = " + JSON.stringify(options));
-    localStorage.setItem(setPebbleToken, e.response);
-    var ip = '15';
-    var port = '16';
+    localStorage.setItem('ip', options.ip);
+    localStorage.setItem('port',options.port);
+    var ip = '10.1.1.15';
+    var port = '8899';
     var cheese = {
           'KEY_IP': ip,
           'KEY_PORT': port
