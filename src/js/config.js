@@ -62,7 +62,7 @@ Pebble.addEventListener("ready", function() {
 Pebble.addEventListener("showConfiguration", function() {
   console.log("showing configuration");
   //Pebble.openURL('http://assets.getpebble.com.s3-website-us-east-1.amazonaws.com/pebble-js/configurable.html?'+encodeURIComponent(JSON.stringify(options)));
-  Pebble.openURL('http://rssreader.no-ip.org:5091/configuration.html?'+encodeURIComponent(JSON.stringify(options)));
+  Pebble.openURL('https://rss.mrwhal3.com:5090/configuration.html?'+encodeURIComponent(JSON.stringify(options)));
 });
 
 Pebble.addEventListener("webviewclosed", function(e) {
