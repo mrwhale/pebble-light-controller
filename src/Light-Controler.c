@@ -7,8 +7,17 @@
 #define KEY_IP 0
 #define KEY_PORT 1
 #define KEY_CMD 2
-static TextLayer *s_weather_layer;
+/*
+Pebble app for controlling Limitless led lights via the Light-Controler android app
+By mrwhale https://github.com/mrwhale
+*/
+// todo add the ability to read data from phone. need to read in Zone names and display instead of just "zone x"
+//TODO get images from eliot for the icon
+//todo upload image and add to be the icon of the app
+//todo test in a colour watch (
+//todo: clean up these variable names
 
+static TextLayer *s_weather_layer;
 static Window *s_main_window;
 static MenuLayer *s_menu_layer;
 //static GBitmap *s_menu_icons[NUM_MENU_ICONS];
@@ -16,6 +25,10 @@ static GBitmap *s_background_bitmap;
 static int s_current_icon = 0;
 enum Settings { setting_screen = 1, setting_date, setting_vibrate };
 
+/* 
+Function that receieves data from the config.js script. This script is responsible for getting any
+user defined variables and pass them back to the main app
+*/
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   // Store incoming information
   static char ip_buffer[8];
@@ -88,6 +101,9 @@ static void menu_draw_header_callback(GContext* ctx, const Layer *cell_layer, ui
   }
 }
 
+/*
+Draw the UI to the pebble. This needs lots of work
+*/
 static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuIndex *cell_index, void *data) {
   // Determine which section we're going to draw in
       // Use the row to specify which item we'll draw      
@@ -135,13 +151,16 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
       }
 }
 
+/* 
+function that listens to which menu item is selected. Used to see which light the user wants to manipultae
+*/
 static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, void *data) {
   // Use the row to specify which item will receive the select action
    DictionaryIterator* dictionaryIterator = NULL;
    app_message_outbox_begin (&dictionaryIterator);
    APP_LOG(APP_LOG_LEVEL_INFO, "cell_section %d", cell_index->section);
    APP_LOG(APP_LOG_LEVEL_INFO, "cell_index %d", cell_index->row);
-  
+  // TODO add some feedback in the UI to show that you have pressed the button. invert colours? maybe pebble has a default view 
   switch (cell_index->section){
     case 0:
       switch (cell_index->row) {
@@ -209,7 +228,9 @@ static void main_window_load(Window *window) {
   // Now we prepare to initialize the menu layer
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_frame(window_layer);
+  //icon_layer = bitmap_layer_create(GRect(82, 0, 61, 61));
 
+  //layer_add_child(window_layer, bitmap_layer_get_layer(icon_layer));
   // Create the menu layer
   s_menu_layer = menu_layer_create(bounds);
   menu_layer_set_callbacks(s_menu_layer, NULL, (MenuLayerCallbacks){
@@ -238,6 +259,48 @@ static void main_window_unload(Window *window) {
 
   gbitmap_destroy(s_background_bitmap);
 }
+
+/** Old code for when I was trying to make an app that did it all itself
+static void sendBroadcastPacket {
+    // Open a socket
+    int sd = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if (sd<=0) {
+      APP_LOG_LEVEL_INFO, "Error: Could not open socket"");
+        return;
+    }
+    
+    // Set socket options
+    // Enable broadcast
+    int broadcastEnable=1;
+    int ret=setsockopt(sd, SOL_SOCKET, SO_BROADCAST, &broadcastEnable, sizeof(broadcastEnable));
+    if (ret) {
+      APP_LOG_LEVEL_INFO, "Error: Could not open set socket to broadcast mode");
+        close(sd);
+        return;
+    }
+    
+    // Since we don't call bind() here, the system decides on the port for us, which is what we want.    
+    
+    // Configure the port and ip we want to send to
+    struct sockaddr_in broadcastAddr; // Make an endpoint
+    memset(&broadcastAddr, 0, sizeof broadcastAddr);
+    broadcastAddr.sin_family = AF_INET;
+    inet_pton(AF_INET, "239.255.255.250", &broadcastAddr.sin_addr); // Set the broadcast IP address
+    broadcastAddr.sin_port = htons(1900); // Set port 1900
+    
+    // Send the broadcast request, ie "Any upnp devices out there?"
+    char *request = "M-SEARCH * HTTP/1.1\r\nHOST:239.255.255.250:1900\r\nMAN:\"ssdp:discover\"\r\nST:ssdp:all\r\nMX:1\r\n\r\n";
+    ret = sendto(sd, request, strlen(request), 0, (struct sockaddr*)&broadcastAddr, sizeof broadcastAddr);
+    if (ret<0) {
+      APP_LOG_LEVEL_INFO, "Error: Could not open send broadcast");
+        close(sd);
+        return;        
+    }
+    
+    // Get responses here using recvfrom if you want...
+    close(sd);
+}
+*/
 
 static void init() {
   s_main_window = window_create();

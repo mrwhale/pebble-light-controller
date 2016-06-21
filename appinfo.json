@@ -11,7 +11,13 @@
     "longName": "light-controller",
     "projectType": "native",
     "resources": {
-        "media": []
+        "media": [
+            {
+                "file": "images/cup",
+                "name": "IMAGE_ICON",
+                "type": "png"
+            }
+        ]
     },
     "sdkVersion": "2",
     "shortName": "light-controller",

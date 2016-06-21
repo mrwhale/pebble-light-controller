@@ -3,7 +3,6 @@
 
 // change this token for your project
 //var settings = require('settings');
-
 var initialized = false;
 var options = {};
 //var Settings = require('settings');
@@ -51,7 +50,7 @@ Pebble.addEventListener('webviewclosed', function(e) {
 */
 
 
-
+/*
 Pebble.addEventListener("ready", function() {
   console.log("ready called!");
   initialized = true;
@@ -95,4 +94,4 @@ Pebble.addEventListener("webviewclosed", function(e) {
   }
 });
 
-
+*/

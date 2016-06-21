@@ -1,8 +1,9 @@
+
 // Listen for when an AppMessage is received
 
 /*var stream = require('stream'), 
     util = require('util'),
-    dgram = require('dgram');
+   
 
 
 const cmdEndByte = 0x55;
@@ -23,8 +24,9 @@ var rgbwLightGroupCommands = {
   "4":    { "on": 0x4B, "off": 0x4C, "toWhite": 0xCB },
 };
 */
-var valByteNA = 0x00;
 
+//var valByteNA = 0x00;
+/*
 Pebble.addEventListener('appmessage',
   function(e) {
     console.log("AppMessage received!");
@@ -33,24 +35,7 @@ Pebble.addEventListener('appmessage',
     console.log ("    stringified: " + requestPayloadAsJsonString);
     //getWeather();
     console.log("here i am");
-    sendUDPCommand("0x35",valByteNA,"10.1.1.15","8899");
+    //sendUDPCommand("0x35",valByteNA,"10.1.1.15","8899");
     
   }                     
-);
-
-
-function sendUDPCommand(cmdByte, valByte, bridgeip, bridgeport) {
-  //console.log( connectionDetails );
-  var cmd = new Buffer([cmdByte, valByte, cmdEndByte]);
-  var client = dgram.createSocket('udp4');
-  //console.log(cmd, parseInt(connectionDetails.port), connectionDetails.ipAddress);
-  client.send(cmd, 0, cmd.length, bridgeport, bridgeip);
-  console.log("sending: " +cmdByte);
-  
- /*   var didFinishSend = function (err, bytes) {
-    client.close();
-    if (typeof callback !== 'undefined') {
-      setTimeout(callback, timeout || 100);
-    }
-  };*/
-}
+); */
