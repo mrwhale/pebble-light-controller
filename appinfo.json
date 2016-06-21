@@ -13,6 +13,7 @@
     "resources": {
         "media": [
             {
+                "menuIcon": true,
                 "file": "images/cup",
                 "name": "IMAGE_ICON",
                 "type": "png"
