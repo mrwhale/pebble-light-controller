@@ -15,6 +15,8 @@ By mrwhale https://github.com/mrwhale
 //TODO get images from eliot for the icon
 //todo upload image and add to be the icon of the app
 //todo test in a colour watch (
+//todo add the colour image in for colour watches
+//todo add feedback for colour watches to change the display of "on" zones to inverse (could do this for aplite?)
 //todo: clean up these variable names
 
 static TextLayer *s_weather_layer;
@@ -191,23 +193,23 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
     switch (cell_index->row){
       case 0:
         //send command to phone to toggle white zone 0
-         dict_write_uint8 (dictionaryIterator, 2, 5);
+         dict_write_uint8 (dictionaryIterator, 2, 9);
         break;
       case 1:
         //send command to phone to toggle white zone 1
-         dict_write_uint8 (dictionaryIterator, 2, 6);
+         dict_write_uint8 (dictionaryIterator, 2, 5);
         break;
       case 2:
         //send command to phone to toggle white zone 2
-         dict_write_uint8 (dictionaryIterator, 2, 7);
+         dict_write_uint8 (dictionaryIterator, 2, 6);
         break;
       case 3:
         //send command to phone to toggle white zone 3
-         dict_write_uint8 (dictionaryIterator, 2, 8);
+         dict_write_uint8 (dictionaryIterator, 2, 7);
         break;
       case 4:
         //send command to phone to toggle white zone 4
-         dict_write_uint8 (dictionaryIterator, 2, 9);
+         dict_write_uint8 (dictionaryIterator, 2, 8);
       break;
      }
     break;
