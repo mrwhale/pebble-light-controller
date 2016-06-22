@@ -1,0 +1,47 @@
+{
+    "author": "Mrwhale",
+    "dependencies": {},
+    "keywords": [],
+    "name": "light-controller",
+    "pebble": {
+        "capabilities": [
+            "configurable"
+        ],
+        "displayName": "light-controller",
+        "enableMultiJS": false,
+        "messageKeys": {
+            "KEY_CMD": 1,
+            "KEY_ZONE": 2,
+            "KEY_ZONE0": 0
+        },
+        "projectType": "native",
+        "resources": {
+            "media": [
+                {
+                    "file": "images/lc-image",
+                    "menuIcon": true,
+                    "name": "ICON_IMAGE",
+                    "targetPlatforms": null,
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/cup",
+                    "name": "IMAGE_ICON",
+                    "targetPlatforms": null,
+                    "type": "png"
+                }
+            ]
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "aplite",
+            "basalt",
+            "chalk"
+        ],
+        "uuid": "1d6c7f01-d948-42a6-aa4e-b2084210ebbc",
+        "watchapp": {
+            "watchface": false
+        }
+    },
+    "version": "0.9.0"
+}

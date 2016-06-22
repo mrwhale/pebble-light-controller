@@ -1,12 +1,12 @@
 #include "pebble.h"
 
 #define NUM_MENU_SECTIONS 2
-//#define NUM_MENU_ICONS 3
 #define NUM_FIRST_MENU_ITEMS 5
 #define NUM_SECOND_MENU_ITEMS 5
-#define KEY_IP 0
-#define KEY_PORT 1
-#define KEY_CMD 2
+#define KEY_ZONE 2
+#define KEY_CMD 3
+#define KEY_ZONE0 4
+
 /*
 Pebble app for controlling Limitless led lights via the Light-Controler android app
 By mrwhale https://github.com/mrwhale
@@ -17,7 +17,6 @@ By mrwhale https://github.com/mrwhale
 //todo test in a colour watch (
 //todo add the colour image in for colour watches
 //todo add feedback for colour watches to change the display of "on" zones to inverse (could do this for aplite?)
-//todo: clean up these variable names
 
 static TextLayer *s_weather_layer;
 static Window *s_main_window;
@@ -28,29 +27,30 @@ static int s_current_icon = 0;
 enum Settings { setting_screen = 1, setting_date, setting_vibrate };
 
 /* 
-Function that receieves data from the config.js script. This script is responsible for getting any
-user defined variables and pass them back to the main app
+Function that receieves data back from somewhere. was used when i needed config.js to get user input. dont need that anymore
+will repurpose to receive data from companion app 
 */
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   // Store incoming information
   static char ip_buffer[8];
   static char port_buffer[32];
   static char weather_layer_buffer[32];
-
+  static char zone_zero[8];
+  
   // Read tuples for data
-  Tuple *ip_tuple = dict_find(iterator, KEY_IP);
-  Tuple *port_tuple = dict_find(iterator, KEY_PORT);
+  //Tuple *ip_tuple = dict_find(iterator, KEY_IP);
+  //Tuple *port_tuple = dict_find(iterator, KEY_PORT);
+  Tuple *zone_zero_tuple = dict_find(iterator, KEY_ZONE0);
   
-  APP_LOG(1, "ip tuple from js %s", ip_tuple->value->cstring);
-  APP_LOG(1, "port tuple received from js %s", port_tuple->value->cstring);
-  
-  
-  
+  //APP_LOG(1, "ip tuple from js %s", ip_tuple->value->cstring);
+  //APP_LOG(1, "port tuple received from js %s", port_tuple->value->cstring);
+  APP_LOG(2, "Zone zero received %s", zone_zero_tuple->value->cstring);
+    
   
   // If all data is available, use it
   //if(ip_tuple && port_tuple) {
-    snprintf(ip_buffer, sizeof(ip_buffer), "%dC", (int)ip_tuple->value->int32);
-    snprintf(port_buffer, sizeof(port_buffer), "%dC", (int)port_tuple->value->int32);
+    //snprintf(ip_buffer, sizeof(ip_buffer), "%dC", (int)ip_tuple->value->int32);
+    //snprintf(port_buffer, sizeof(port_buffer), "%dC", (int)port_tuple->value->int32);
 
     // Assemble full string and display
     //snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", ip_buffer, port_buffer);
@@ -153,70 +153,88 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
       }
 }
 
-/* 
-function that listens to which menu item is selected. Used to see which light the user wants to manipultae
-*/
-static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, void *data) {
-  // Use the row to specify which item will receive the select action
-   DictionaryIterator* dictionaryIterator = NULL;
-   app_message_outbox_begin (&dictionaryIterator);
-   APP_LOG(APP_LOG_LEVEL_INFO, "cell_section %d", cell_index->section);
-   APP_LOG(APP_LOG_LEVEL_INFO, "cell_index %d", cell_index->row);
-  // TODO add some feedback in the UI to show that you have pressed the button. invert colours? maybe pebble has a default view 
-  switch (cell_index->section){
+void send_cmd(int section, int row, int cmd){
+  
+  DictionaryIterator* dictionaryIterator = NULL;
+  app_message_outbox_begin (&dictionaryIterator);
+  
+  APP_LOG(APP_LOG_LEVEL_INFO, "cell_section %d", section);
+  APP_LOG(APP_LOG_LEVEL_INFO, "cell_index %d", row);
+  switch(section){
     case 0:
-      switch (cell_index->row) {
-      // This is the menu item with the cycling icon
-      case 0:
-        //send command to phone to toggle colour zone 0
-         dict_write_uint8 (dictionaryIterator, 2, 0);
-        break;
-      case 1:
-        // Send command to phone to toggle colour zone 1
-         dict_write_uint8 (dictionaryIterator, 2, 1);
-        break;
-      case 2:
-        //send command to phone to toggle colour zone 2
-         dict_write_uint8 (dictionaryIterator, 2, 2);
-        break;
-      case 3:
-        //send command to phone to toggle colour zone 3
-         dict_write_uint8 (dictionaryIterator, 2, 3);
-        break;
-      case 4:
-        //send command to phone to toggle colour zone 4
-         dict_write_uint8 (dictionaryIterator, 2, 4);
-         break;
+      APP_LOG(2,"send_cmd section 0");
+      switch(row){
+        case 0:
+          dict_write_uint8 (dictionaryIterator, KEY_ZONE, 0);
+          dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+          break;
+        case 1:
+          dict_write_uint8 (dictionaryIterator, KEY_ZONE, 1);
+          dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+          break;
+        case 2:
+          dict_write_uint8 (dictionaryIterator, KEY_ZONE, 2);
+          dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+          break;
+        case 3:
+          dict_write_uint8 (dictionaryIterator, KEY_ZONE, 3);
+          dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+          break;
+        case 4:
+          dict_write_uint8 (dictionaryIterator, KEY_ZONE, 4);
+          dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+          break;        
       }
-    break;
-    case 1:
-    switch (cell_index->row){
-      case 0:
-        //send command to phone to toggle white zone 0
-         dict_write_uint8 (dictionaryIterator, 2, 9);
-        break;
-      case 1:
-        //send command to phone to toggle white zone 1
-         dict_write_uint8 (dictionaryIterator, 2, 5);
-        break;
-      case 2:
-        //send command to phone to toggle white zone 2
-         dict_write_uint8 (dictionaryIterator, 2, 6);
-        break;
-      case 3:
-        //send command to phone to toggle white zone 3
-         dict_write_uint8 (dictionaryIterator, 2, 7);
-        break;
-      case 4:
-        //send command to phone to toggle white zone 4
-         dict_write_uint8 (dictionaryIterator, 2, 8);
       break;
-     }
-    break;
-   }
+    case 1:
+      APP_LOG(2,"send_cmd section 1");
+      switch(row){
+        case 0:
+          dict_write_uint8 (dictionaryIterator, KEY_ZONE, 9);
+          dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+          break;
+        case 1:
+          dict_write_uint8 (dictionaryIterator, KEY_ZONE, 5);
+          dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+          break;
+        case 2:
+          dict_write_uint8 (dictionaryIterator, KEY_ZONE, 6);
+          dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+          break;
+        case 3:
+          dict_write_uint8 (dictionaryIterator, KEY_ZONE, 7);
+          dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+          break;
+        case 4:
+          dict_write_uint8 (dictionaryIterator, KEY_ZONE, 8);
+          dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+          break;
+      }
+  }
    dict_write_end (dictionaryIterator);
    app_message_outbox_send ();
 }
+
+
+/* 
+Callback function on long press of select key
+This will send the phone app an OFF command for the selected zone in the menu
+*/
+static void menu_long_click(MenuLayer *menu_layer, MenuIndex *cell_index, void *data) {
+    APP_LOG(APP_LOG_LEVEL_INFO,"You pressed select for longk time");
+    send_cmd(cell_index->section,cell_index->row,0);
+  }
+  
+
+/* 
+Callback function on short press of select key
+This will send the phone app an ON command for the selected zone in the menu
+*/
+static void menu_short_click(MenuLayer *menu_layer, MenuIndex *cell_index, void *data) {
+    APP_LOG(APP_LOG_LEVEL_INFO,"You pressed select for short time");  
+    send_cmd(cell_index->section,cell_index->row,1);
+}
+
 
 static void main_window_load(Window *window) {
   // Here we load the bitmap assets
@@ -241,12 +259,13 @@ static void main_window_load(Window *window) {
     .get_header_height = menu_get_header_height_callback,
     .draw_header = menu_draw_header_callback,
     .draw_row = menu_draw_row_callback,
-    .select_click = menu_select_callback,
+    .select_click = menu_short_click,
+    .select_long_click = menu_long_click
   });
+  
 
   // Bind the menu layer's click config provider to the window for interactivity
   menu_layer_set_click_config_onto_window(s_menu_layer, window);
-
   layer_add_child(window_layer, menu_layer_get_layer(s_menu_layer));
 }
 
@@ -262,50 +281,8 @@ static void main_window_unload(Window *window) {
   gbitmap_destroy(s_background_bitmap);
 }
 
-/** Old code for when I was trying to make an app that did it all itself
-static void sendBroadcastPacket {
-    // Open a socket
-    int sd = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
-    if (sd<=0) {
-      APP_LOG_LEVEL_INFO, "Error: Could not open socket"");
-        return;
-    }
-    
-    // Set socket options
-    // Enable broadcast
-    int broadcastEnable=1;
-    int ret=setsockopt(sd, SOL_SOCKET, SO_BROADCAST, &broadcastEnable, sizeof(broadcastEnable));
-    if (ret) {
-      APP_LOG_LEVEL_INFO, "Error: Could not open set socket to broadcast mode");
-        close(sd);
-        return;
-    }
-    
-    // Since we don't call bind() here, the system decides on the port for us, which is what we want.    
-    
-    // Configure the port and ip we want to send to
-    struct sockaddr_in broadcastAddr; // Make an endpoint
-    memset(&broadcastAddr, 0, sizeof broadcastAddr);
-    broadcastAddr.sin_family = AF_INET;
-    inet_pton(AF_INET, "239.255.255.250", &broadcastAddr.sin_addr); // Set the broadcast IP address
-    broadcastAddr.sin_port = htons(1900); // Set port 1900
-    
-    // Send the broadcast request, ie "Any upnp devices out there?"
-    char *request = "M-SEARCH * HTTP/1.1\r\nHOST:239.255.255.250:1900\r\nMAN:\"ssdp:discover\"\r\nST:ssdp:all\r\nMX:1\r\n\r\n";
-    ret = sendto(sd, request, strlen(request), 0, (struct sockaddr*)&broadcastAddr, sizeof broadcastAddr);
-    if (ret<0) {
-      APP_LOG_LEVEL_INFO, "Error: Could not open send broadcast");
-        close(sd);
-        return;        
-    }
-    
-    // Get responses here using recvfrom if you want...
-    close(sd);
-}
-*/
-
 static void init() {
-  s_main_window = window_create();
+  s_main_window = window_create();  
   window_set_window_handlers(s_main_window, (WindowHandlers) {
     .load = main_window_load,
     .unload = main_window_unload,
@@ -320,6 +297,7 @@ static void init() {
 
   // Open AppMessage
   app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
+  
 }
 
 static void deinit() {
