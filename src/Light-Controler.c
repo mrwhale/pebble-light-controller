@@ -112,43 +112,43 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
       switch (cell_index->row) {
         case 0:
           // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 0", "Select to toggle", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, "Zone 0", "Press on, Long off", NULL);
           break;
         case 1:
           // This is a basic menu icon with a cycling icon
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 1", "Select to toggle",NULL);
+          menu_cell_basic_draw(ctx, cell_layer, "Zone 1", "Press on, Long off",NULL);
           break;
         case 2: 
           // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 2", "Select to toggle", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, "Zone 2", "Press on, Long off", NULL);
           break;
         case 3: 
           // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 3", "Select to toggle", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, "Zone 3", "Press on, Long off", NULL);
           break;
         case 4: 
           // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 4", "Select to toggle", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, "Zone 4", "Press on, Long off", NULL);
           break;
         case 5:
           // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 0", "Select to toggle", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, "Zone 0", "Press on, Long off", NULL);
           break;
         case 6:
           // This is a basic menu icon with a cycling icon
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 1", "Select to toggle",NULL);
+          menu_cell_basic_draw(ctx, cell_layer, "Zone 1", "Press on, Long off",NULL);
           break;
         case 7: 
           // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 2", "Select to toggle", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, "Zone 2", "Press on, Long off", NULL);
           break;
         case 8: 
           // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 3", "Select to toggle", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, "Zone 3", "Press on, Long off", NULL);
           break;
         case 9: 
           // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 4", "Select to toggle", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, "Zone 4", "Press on, Long off", NULL);
           break;
       }
 }

@@ -5,7 +5,7 @@
     "name": "light-controller",
     "pebble": {
         "capabilities": [
-            "configurable"
+            ""
         ],
         "displayName": "light-controller",
         "enableMultiJS": false,
@@ -23,12 +23,6 @@
                     "name": "ICON_IMAGE",
                     "targetPlatforms": null,
                     "type": "bitmap"
-                },
-                {
-                    "file": "images/cup",
-                    "name": "IMAGE_ICON",
-                    "targetPlatforms": null,
-                    "type": "png"
                 }
             ]
         },
