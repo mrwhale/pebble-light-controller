@@ -5,15 +5,21 @@
 #define NUM_SECOND_MENU_ITEMS 5
 #define KEY_ZONE 2
 #define KEY_CMD 3
-#define KEY_ZONE0 4
-
+#define KEY_ZONE0 5
+#define KEY_ZONE1 6
+#define KEY_ZONE2 7
+#define KEY_ZONE3 8
+#define KEY_ZONE4 9
+#define KEY_ZONE5 10
+#define KEY_ZONE6 11
+#define KEY_ZONE7 12
+#define KEY_ZONE8 13
+#define KEY_ZONE9 14
 /*
 Pebble app for controlling Limitless led lights via the Light-Controler android app
 By mrwhale https://github.com/mrwhale
 */
 // todo add the ability to read data from phone. need to read in Zone names and display instead of just "zone x"
-//TODO get images from eliot for the icon
-//todo upload image and add to be the icon of the app
 //todo test in a colour watch (
 //todo add the colour image in for colour watches
 //todo add feedback for colour watches to change the display of "on" zones to inverse (could do this for aplite?)
@@ -32,30 +38,53 @@ will repurpose to receive data from companion app
 */
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   // Store incoming information
-  static char ip_buffer[8];
-  static char port_buffer[32];
-  static char weather_layer_buffer[32];
-  static char zone_zero[8];
-  
-  // Read tuples for data
-  //Tuple *ip_tuple = dict_find(iterator, KEY_IP);
-  //Tuple *port_tuple = dict_find(iterator, KEY_PORT);
-  Tuple *zone_zero_tuple = dict_find(iterator, KEY_ZONE0);
-  
-  //APP_LOG(1, "ip tuple from js %s", ip_tuple->value->cstring);
-  //APP_LOG(1, "port tuple received from js %s", port_tuple->value->cstring);
-  APP_LOG(2, "Zone zero received %s", zone_zero_tuple->value->cstring);
-    
-  
-  // If all data is available, use it
-  //if(ip_tuple && port_tuple) {
-    //snprintf(ip_buffer, sizeof(ip_buffer), "%dC", (int)ip_tuple->value->int32);
-    //snprintf(port_buffer, sizeof(port_buffer), "%dC", (int)port_tuple->value->int32);
+  // static char ip_buffer[8];
+  //static char port_buffer[32];
+  //static char weather_layer_buffer[32];
 
-    // Assemble full string and display
-    //snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s, %s", ip_buffer, port_buffer);
-    //text_layer_set_text(s_weather_layer, weather_layer_buffer);
-  //}
+  APP_LOG(APP_LOG_LEVEL_INFO, "Just got a message from the phone!");  
+  // Read tuples for data
+  Tuple *zone_zero_tuple = dict_find(iterator, KEY_ZONE0);
+  Tuple *zone_one_tuple = dict_find(iterator, KEY_ZONE1);
+  Tuple *zone_two_tuple = dict_find(iterator, KEY_ZONE2);
+  Tuple *zone_three_tuple = dict_find(iterator, KEY_ZONE3);
+  Tuple *zone_four_tuple = dict_find(iterator, KEY_ZONE4);
+  Tuple *zone_five_tuple = dict_find(iterator, KEY_ZONE5);
+  Tuple *zone_six_tuple = dict_find(iterator, KEY_ZONE6);
+  Tuple *zone_seven_tuple = dict_find(iterator, KEY_ZONE7);
+  Tuple *zone_eight_tuple = dict_find(iterator, KEY_ZONE8);
+  Tuple *zone_nine_tuple = dict_find(iterator, KEY_ZONE9);
+
+  if(zone_zero_tuple){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone zero received %s", zone_zero_tuple->value->cstring);
+  } 
+  if(zone_one_tuple){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone one received %s", zone_one_tuple->value->cstring);
+  }
+  if(zone_two_tuple){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone two received %s", zone_two_tuple->value->cstring);
+  }
+  if(zone_three_tuple){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone three received %s", zone_three_tuple->value->cstring);
+  }
+  if(zone_four_tuple){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone four received %s", zone_four_tuple->value->cstring);
+  }
+  if(zone_five_tuple){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone five received %s", zone_five_tuple->value->cstring);
+  }
+  if(zone_six_tuple){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone six received %s", zone_six_tuple->value->cstring);
+  }
+  if(zone_seven_tuple){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone seven received %s", zone_seven_tuple->value->cstring);
+  }
+  if(zone_eight_tuple){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone eight received %s", zone_eight_tuple->value->cstring);
+  }
+  if(zone_nine_tuple){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone nine received %s", zone_nine_tuple->value->cstring);
+  } 
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
@@ -162,7 +191,7 @@ void send_cmd(int section, int row, int cmd){
   APP_LOG(APP_LOG_LEVEL_INFO, "cell_index %d", row);
   switch(section){
     case 0:
-      APP_LOG(2,"send_cmd section 0");
+      APP_LOG(APP_LOG_LEVEL_INFO,"send_cmd section 0");
       switch(row){
         case 0:
           dict_write_uint8 (dictionaryIterator, KEY_ZONE, 0);
@@ -187,7 +216,7 @@ void send_cmd(int section, int row, int cmd){
       }
       break;
     case 1:
-      APP_LOG(2,"send_cmd section 1");
+      APP_LOG(APP_LOG_LEVEL_INFO,"send_cmd section 1");
       switch(row){
         case 0:
           dict_write_uint8 (dictionaryIterator, KEY_ZONE, 9);
