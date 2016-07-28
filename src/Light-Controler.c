@@ -6,15 +6,15 @@
 #define KEY_ZONE 2
 #define KEY_CMD 3
 #define KEY_ZONE0 5
-#define KEY_ZONE1 6
-#define KEY_ZONE2 7
-#define KEY_ZONE3 8
-#define KEY_ZONE4 9
-#define KEY_ZONE5 10
-#define KEY_ZONE6 11
-#define KEY_ZONE7 12
-#define KEY_ZONE8 13
-#define KEY_ZONE9 14
+//#define KEY_ZONE1 6
+//#define KEY_ZONE2 7
+//#define KEY_ZONE3 8
+//#define KEY_ZONE4 9
+//#define KEY_ZONE5 10
+//#define KEY_ZONE6 11
+//#define KEY_ZONE7 12
+//#define KEY_ZONE8 13
+//#define KEY_ZONE9 14
 /*
 Pebble app for controlling Limitless led lights via the Light-Controler android app
 By mrwhale https://github.com/mrwhale
@@ -45,7 +45,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   APP_LOG(APP_LOG_LEVEL_INFO, "Just got a message from the phone!");  
   // Read tuples for data
   Tuple *zone_zero_tuple = dict_find(iterator, KEY_ZONE0);
-  Tuple *zone_one_tuple = dict_find(iterator, KEY_ZONE1);
+/*  Tuple *zone_one_tuple = dict_find(iterator, KEY_ZONE1);
   Tuple *zone_two_tuple = dict_find(iterator, KEY_ZONE2);
   Tuple *zone_three_tuple = dict_find(iterator, KEY_ZONE3);
   Tuple *zone_four_tuple = dict_find(iterator, KEY_ZONE4);
@@ -53,12 +53,12 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   Tuple *zone_six_tuple = dict_find(iterator, KEY_ZONE6);
   Tuple *zone_seven_tuple = dict_find(iterator, KEY_ZONE7);
   Tuple *zone_eight_tuple = dict_find(iterator, KEY_ZONE8);
-  Tuple *zone_nine_tuple = dict_find(iterator, KEY_ZONE9);
+  Tuple *zone_nine_tuple = dict_find(iterator, KEY_ZONE9); */
 
   if(zone_zero_tuple){
     APP_LOG(APP_LOG_LEVEL_INFO, "Zone zero received %s", zone_zero_tuple->value->cstring);
   } 
-  if(zone_one_tuple){
+/*  if(zone_one_tuple){
     APP_LOG(APP_LOG_LEVEL_INFO, "Zone one received %s", zone_one_tuple->value->cstring);
   }
   if(zone_two_tuple){
@@ -84,7 +84,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   }
   if(zone_nine_tuple){
     APP_LOG(APP_LOG_LEVEL_INFO, "Zone nine received %s", zone_nine_tuple->value->cstring);
-  } 
+  } */
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {

@@ -12,7 +12,7 @@
         "messageKeys": {
             "KEY_CMD": 1,
             "KEY_ZONE": 2,
-            "KEY_ZONEtest": 5
+            "KEY_ZONE0": 5
         },
         "projectType": "native",
         "resources": {
