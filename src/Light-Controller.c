@@ -31,6 +31,17 @@ static MenuLayer *s_menu_layer;
 static GBitmap *s_background_bitmap;
 static int s_current_icon = 0;
 enum Settings { setting_screen = 1, setting_date, setting_vibrate };
+//Variables to hold zone names
+char zone_zero[] = "Zone 0";
+char zone_one[] = "Zone 1w";
+char zone_two[] = "Zone 2w";
+char zone_three[] = "Zone 3w";
+char zone_four[] = "Zone 4w";
+char zone_five[] = "Zone 0c";
+char zone_six[] = "Zone 1c";
+char zone_seven[] = "Zone 2c";
+char zone_eight[] = "Zone 3c";
+char zone_nine[] = "Zone 4c";
 
 /* 
 Function that receieves data back from somewhere. was used when i needed config.js to get user input. dont need that anymore
@@ -137,49 +148,47 @@ Draw the UI to the pebble. This needs lots of work
 */
 static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuIndex *cell_index, void *data) {
   // Determine which section we're going to draw in
-      // Use the row to specify which item we'll draw      
-      switch (cell_index->row) {
+      // Use the row to specify which item we'll draw   
+  switch (cell_index->section){
+    case 0:
+      switch (cell_index->row){
         case 0:
-          // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 0", "Press on, Long off", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, zone_zero, "Press on, Long off", NULL);
           break;
         case 1:
-          // This is a basic menu icon with a cycling icon
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 1", "Press on, Long off",NULL);
+          menu_cell_basic_draw(ctx, cell_layer, zone_one, "Press on, Long off", NULL);
           break;
-        case 2: 
-          // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 2", "Press on, Long off", NULL);
+        case 2:
+          menu_cell_basic_draw(ctx, cell_layer, zone_two, "Press on, Long off", NULL);
           break;
-        case 3: 
-          // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 3", "Press on, Long off", NULL);
+        case 3:
+          menu_cell_basic_draw(ctx, cell_layer, zone_three, "Press on, Long off", NULL);
           break;
-        case 4: 
-          // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 4", "Press on, Long off", NULL);
-          break;
-        case 5:
-          // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 0", "Press on, Long off", NULL);
-          break;
-        case 6:
-          // This is a basic menu icon with a cycling icon
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 1", "Press on, Long off",NULL);
-          break;
-        case 7: 
-          // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 2", "Press on, Long off", NULL);
-          break;
-        case 8: 
-          // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 3", "Press on, Long off", NULL);
-          break;
-        case 9: 
-          // This is a basic menu item with a title and subtitle
-          menu_cell_basic_draw(ctx, cell_layer, "Zone 4", "Press on, Long off", NULL);
+        case 4:
+          menu_cell_basic_draw(ctx, cell_layer, zone_four, "Press on, Long off", NULL);
           break;
       }
+      break;
+    case 1:
+      switch (cell_index->row){      
+        case 0:
+          menu_cell_basic_draw(ctx, cell_layer, zone_five, "Press on, Long off", NULL);
+          break;
+        case 1:
+          menu_cell_basic_draw(ctx, cell_layer, zone_six, "Press on, Long off", NULL);
+          break;
+        case 2:
+          menu_cell_basic_draw(ctx, cell_layer, zone_seven, "Press on, Long off", NULL);
+          break;
+        case 3:
+          menu_cell_basic_draw(ctx, cell_layer, zone_eight, "Press on, Long off", NULL);
+          break;
+        case 4:
+          menu_cell_basic_draw(ctx, cell_layer, zone_nine, "Press on, Long off", NULL);
+          break;
+      }
+      break;
+  } 
 }
 
 void send_cmd(int section, int row, int cmd){
