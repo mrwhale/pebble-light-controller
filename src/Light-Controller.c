@@ -15,6 +15,7 @@
 #define KEY_ZONE7 12
 #define KEY_ZONE8 13
 #define KEY_ZONE9 14
+#define ZONE1_NAME 15
 /*
 Pebble app for controlling Limitless led lights via the Light-Controler android app
 By mrwhale https://github.com/mrwhale
@@ -65,36 +66,43 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   Tuple *zone_seven_tuple = dict_find(iterator, KEY_ZONE7);
   Tuple *zone_eight_tuple = dict_find(iterator, KEY_ZONE8);
   Tuple *zone_nine_tuple = dict_find(iterator, KEY_ZONE9);
+  Tuple *zone_one_name = dict_find(iterator, ZONE1_NAME);
 
   if(zone_zero_tuple){
-    APP_LOG(APP_LOG_LEVEL_INFO, "Zone zero received %s", zone_zero_tuple->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone zero received %d", zone_zero_tuple->value->int8);
   } 
   if(zone_one_tuple){
-    APP_LOG(APP_LOG_LEVEL_INFO, "Zone one received %s", zone_one_tuple->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone one received %d", zone_one_tuple->value->int8);
   }
   if(zone_two_tuple){
-    APP_LOG(APP_LOG_LEVEL_INFO, "Zone two received %s", zone_two_tuple->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone two received %d", zone_two_tuple->value->int8);
   }
   if(zone_three_tuple){
-    APP_LOG(APP_LOG_LEVEL_INFO, "Zone three received %s", zone_three_tuple->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone three received %d", zone_three_tuple->value->int8);
   }
   if(zone_four_tuple){
-    APP_LOG(APP_LOG_LEVEL_INFO, "Zone four received %s", zone_four_tuple->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone four received %d", zone_four_tuple->value->int8);
   }
   if(zone_five_tuple){
-    APP_LOG(APP_LOG_LEVEL_INFO, "Zone five received %s", zone_five_tuple->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone five received %d", zone_five_tuple->value->int8);
   }
   if(zone_six_tuple){
-    APP_LOG(APP_LOG_LEVEL_INFO, "Zone six received %s", zone_six_tuple->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone six received %d", zone_six_tuple->value->int8);
   }
   if(zone_seven_tuple){
-    APP_LOG(APP_LOG_LEVEL_INFO, "Zone seven received %s", zone_seven_tuple->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone seven received %d", zone_seven_tuple->value->int8);
   }
   if(zone_eight_tuple){
-    APP_LOG(APP_LOG_LEVEL_INFO, "Zone eight received %s", zone_eight_tuple->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone eight received %d", zone_eight_tuple->value->int8);
   }
   if(zone_nine_tuple){
-    APP_LOG(APP_LOG_LEVEL_INFO, "Zone nine received %s", zone_nine_tuple->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone nine received %d", zone_nine_tuple->value->int8);
+  }
+  if(zone_one_name){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone one name received %s", zone_one_name->value->cstring);
+    //zone_one = zone_one_name->value->cstring;
+    strcpy(zone_one, zone_one_name->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "zone one overide %s", zone_one);
   }
 }
 
