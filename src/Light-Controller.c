@@ -84,7 +84,8 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   Tuple *zone_seven_name = dict_find(iterator, ZONE7_NAME);
   Tuple *zone_eight_name = dict_find(iterator, ZONE8_NAME);
 
-
+  //If we receive zone data from the phone app, lets see what they say about it and store it
+  // for later use TODO
   if(zone_zero_tuple){
     APP_LOG(APP_LOG_LEVEL_INFO, "Zone zero received %d", zone_zero_tuple->value->int8);
   } 
@@ -115,6 +116,8 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   if(zone_nine_tuple){
     APP_LOG(APP_LOG_LEVEL_INFO, "Zone nine received %d", zone_nine_tuple->value->int8);
   }
+  //If we receive zone names from android app, lets read them and then save them over original varibale
+  // we should also save this to persistant storage for later use plz
   if(zone_one_name){
     APP_LOG(APP_LOG_LEVEL_INFO, "Zone one name received %s", zone_one_name->value->cstring);
     strcpy(zone_one, zone_one_name->value->cstring);
@@ -404,12 +407,51 @@ static void init() {
   app_message_register_outbox_sent(outbox_sent_callback);
 
   // Open AppMessage
-  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
-  
+  app_message_open(app_message_inbox_size_maximum(), APP_MESSAGE_OUTBOX_SIZE_MINIMUM);
+  //TODO add initialisation for zone names in persistant storage. read them out if exist. if
+  // they dont we should consider asking the main app for them
+  //If storage for zone name exists, then lets read it in
+  APP_LOG(APP_LOG_LEVEL_INFO, "Reading Zone names in from storage");
+  if(persist_exists(ZONE1_NAME)){
+    persist_read_string(ZONE1_NAME, zone_one, 15);
+  }
+  if(persist_exists(ZONE2_NAME)){
+    persist_read_string(ZONE2_NAME, zone_two, 15);
+  }
+  if(persist_exists(ZONE3_NAME)){
+    persist_read_string(ZONE3_NAME, zone_three, 15);
+  }
+  if(persist_exists(ZONE4_NAME)){
+    persist_read_string(ZONE4_NAME, zone_four, 15);
+  }
+
+  if(persist_exists(ZONE5_NAME)){
+    persist_read_string(ZONE5_NAME, zone_five, 15);
+  }
+  if(persist_exists(ZONE6_NAME)){
+    persist_read_string(ZONE6_NAME, zone_six, 15);
+  }
+  if(persist_exists(ZONE7_NAME)){
+    persist_read_string(ZONE7_NAME, zone_seven, 15);
+  }
+  if(persist_exists(ZONE8_NAME)){
+    persist_read_string(ZONE8_NAME, zone_eight, 15);
+  }
 }
 
 static void deinit() {
   window_destroy(s_main_window);
+  //Write all zone names to storage on de-init
+  APP_LOG(APP_LOG_LEVEL_INFO, "Writing zone names to strorage");
+  persist_write_string(ZONE1_NAME, zone_one);
+  persist_write_string(ZONE2_NAME, zone_two);
+  persist_write_string(ZONE3_NAME, zone_three);
+  persist_write_string(ZONE4_NAME, zone_four);
+
+  persist_write_string(ZONE5_NAME, zone_five);
+  persist_write_string(ZONE6_NAME, zone_six);
+  persist_write_string(ZONE7_NAME, zone_seven);
+  persist_write_string(ZONE8_NAME, zone_eight);
 }
 
 int main(void) {
