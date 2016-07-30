@@ -16,6 +16,14 @@
 #define KEY_ZONE8 13
 #define KEY_ZONE9 14
 #define ZONE1_NAME 15
+#define ZONE2_NAME 16
+#define ZONE3_NAME 17
+#define ZONE4_NAME 18
+#define ZONE5_NAME 19
+#define ZONE6_NAME 20
+#define ZONE7_NAME 21
+#define ZONE8_NAME 22
+
 /*
 Pebble app for controlling Limitless led lights via the Light-Controler android app
 By mrwhale https://github.com/mrwhale
@@ -33,16 +41,17 @@ static GBitmap *s_background_bitmap;
 static int s_current_icon = 0;
 enum Settings { setting_screen = 1, setting_date, setting_vibrate };
 //Variables to hold zone names
-char zone_zero[] = "Zone 0";
-char zone_one[] = "Zone 1w";
-char zone_two[] = "Zone 2w";
-char zone_three[] = "Zone 3w";
-char zone_four[] = "Zone 4w";
-char zone_five[] = "Zone 0c";
-char zone_six[] = "Zone 1c";
-char zone_seven[] = "Zone 2c";
-char zone_eight[] = "Zone 3c";
-char zone_nine[] = "Zone 4c";
+char zone_zero[15] = "Colour Global";
+char zone_one[15] = "Zone 1c";
+char zone_two[15] = "Zone 2c";
+char zone_three[15] = "Zone 3c";
+char zone_four[15] = "Zone 4c";
+char zone_nine[15] = "White Global";
+char zone_five[15] = "Zone 1w";
+char zone_six[15] = "Zone 2w";
+char zone_seven[15] = "Zone 3w";
+char zone_eight[15] = "Zone 4w";
+
 
 /* 
 Function that receieves data back from somewhere. was used when i needed config.js to get user input. dont need that anymore
@@ -67,6 +76,14 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   Tuple *zone_eight_tuple = dict_find(iterator, KEY_ZONE8);
   Tuple *zone_nine_tuple = dict_find(iterator, KEY_ZONE9);
   Tuple *zone_one_name = dict_find(iterator, ZONE1_NAME);
+  Tuple *zone_two_name = dict_find(iterator, ZONE2_NAME);
+  Tuple *zone_three_name = dict_find(iterator, ZONE3_NAME);
+  Tuple *zone_four_name = dict_find(iterator, ZONE4_NAME);
+  Tuple *zone_five_name = dict_find(iterator, ZONE5_NAME);
+  Tuple *zone_six_name = dict_find(iterator, ZONE6_NAME);
+  Tuple *zone_seven_name = dict_find(iterator, ZONE7_NAME);
+  Tuple *zone_eight_name = dict_find(iterator, ZONE8_NAME);
+
 
   if(zone_zero_tuple){
     APP_LOG(APP_LOG_LEVEL_INFO, "Zone zero received %d", zone_zero_tuple->value->int8);
@@ -100,10 +117,45 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   }
   if(zone_one_name){
     APP_LOG(APP_LOG_LEVEL_INFO, "Zone one name received %s", zone_one_name->value->cstring);
-    //zone_one = zone_one_name->value->cstring;
     strcpy(zone_one, zone_one_name->value->cstring);
     APP_LOG(APP_LOG_LEVEL_INFO, "zone one overide %s", zone_one);
   }
+  if(zone_two_name){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone two name received %s", zone_two_name->value->cstring);
+    strcpy(zone_two, zone_two_name->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "zone two overide %s", zone_two);
+  }
+  if(zone_three_name){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone three name received %s", zone_three_name->value->cstring);
+    strcpy(zone_three, zone_three_name->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "zone three overide %s", zone_three);
+  }
+  if(zone_four_name){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone four name received %s", zone_four_name->value->cstring);
+    strcpy(zone_four, zone_four_name->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "zone four overide %s", zone_four);
+  }
+  if(zone_five_name){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone five name received %s", zone_five_name->value->cstring);
+    strcpy(zone_five, zone_five_name->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "zone five overide %s", zone_five);
+  }
+  if(zone_six_name){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone six name received %s", zone_six_name->value->cstring);
+    strcpy(zone_six, zone_six_name->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "zone six overide %s", zone_six);
+  }
+  if(zone_seven_name){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone seven name received %s", zone_seven_name->value->cstring);
+    strcpy(zone_seven, zone_seven_name->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "zone seven overide %s", zone_seven);
+  }
+  if(zone_eight_name){
+    APP_LOG(APP_LOG_LEVEL_INFO, "Zone eight name received %s", zone_eight_name->value->cstring);
+    strcpy(zone_eight, zone_eight_name->value->cstring);
+    APP_LOG(APP_LOG_LEVEL_INFO, "zone eight overide %s", zone_eight);
+  }
+
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
@@ -180,19 +232,19 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
     case 1:
       switch (cell_index->row){      
         case 0:
-          menu_cell_basic_draw(ctx, cell_layer, zone_five, "Press on, Long off", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, zone_nine, "Press on, Long off", NULL);
           break;
         case 1:
-          menu_cell_basic_draw(ctx, cell_layer, zone_six, "Press on, Long off", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, zone_five, "Press on, Long off", NULL);
           break;
         case 2:
-          menu_cell_basic_draw(ctx, cell_layer, zone_seven, "Press on, Long off", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, zone_six, "Press on, Long off", NULL);
           break;
         case 3:
-          menu_cell_basic_draw(ctx, cell_layer, zone_eight, "Press on, Long off", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, zone_seven, "Press on, Long off", NULL);
           break;
         case 4:
-          menu_cell_basic_draw(ctx, cell_layer, zone_nine, "Press on, Long off", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, zone_eight, "Press on, Long off", NULL);
           break;
       }
       break;
@@ -204,31 +256,36 @@ void send_cmd(int section, int row, int cmd){
   DictionaryIterator* dictionaryIterator = NULL;
   app_message_outbox_begin (&dictionaryIterator);
   
-  APP_LOG(APP_LOG_LEVEL_INFO, "cell_section %d", section);
-  APP_LOG(APP_LOG_LEVEL_INFO, "cell_index %d", row);
+  //APP_LOG(APP_LOG_LEVEL_INFO, "cell_section %d", section);
+  //APP_LOG(APP_LOG_LEVEL_INFO, "cell_index %d", row);
   switch(section){
     case 0:
-      APP_LOG(APP_LOG_LEVEL_INFO,"send_cmd section 0");
+      //APP_LOG(APP_LOG_LEVEL_INFO,"send_cmd section 0");
       switch(row){
         case 0:
           dict_write_uint8 (dictionaryIterator, KEY_ZONE, 0);
           dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+	  APP_LOG(APP_LOG_LEVEL_INFO, "Going to send %s command %d", zone_zero, cmd);
           break;
         case 1:
           dict_write_uint8 (dictionaryIterator, KEY_ZONE, 1);
           dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+	  APP_LOG(APP_LOG_LEVEL_INFO, "Going to send %s command %d", zone_one, cmd);
           break;
         case 2:
           dict_write_uint8 (dictionaryIterator, KEY_ZONE, 2);
           dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+	  APP_LOG(APP_LOG_LEVEL_INFO, "Going to send %s command %d", zone_two, cmd);
           break;
         case 3:
           dict_write_uint8 (dictionaryIterator, KEY_ZONE, 3);
           dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+	  APP_LOG(APP_LOG_LEVEL_INFO, "Going to send %s command %d", zone_three, cmd);
           break;
         case 4:
           dict_write_uint8 (dictionaryIterator, KEY_ZONE, 4);
           dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+	  APP_LOG(APP_LOG_LEVEL_INFO, "Going to send %s command %d", zone_four, cmd);
           break;        
       }
       break;
@@ -238,22 +295,27 @@ void send_cmd(int section, int row, int cmd){
         case 0:
           dict_write_uint8 (dictionaryIterator, KEY_ZONE, 9);
           dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+	  APP_LOG(APP_LOG_LEVEL_INFO, "Going to send %s command %d", zone_nine, cmd);
           break;
         case 1:
           dict_write_uint8 (dictionaryIterator, KEY_ZONE, 5);
           dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+	  APP_LOG(APP_LOG_LEVEL_INFO, "Going to send %s command %d", zone_five, cmd);
           break;
         case 2:
           dict_write_uint8 (dictionaryIterator, KEY_ZONE, 6);
           dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+	  APP_LOG(APP_LOG_LEVEL_INFO, "Going to send %s command %d", zone_six, cmd);
           break;
         case 3:
           dict_write_uint8 (dictionaryIterator, KEY_ZONE, 7);
           dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+	  APP_LOG(APP_LOG_LEVEL_INFO, "Going to send %s command %d", zone_seven, cmd);
           break;
         case 4:
           dict_write_uint8 (dictionaryIterator, KEY_ZONE, 8);
           dict_write_uint8 (dictionaryIterator, KEY_CMD, cmd);
+	  APP_LOG(APP_LOG_LEVEL_INFO, "Going to send %s command %d", zone_eight, cmd);
           break;
       }
   }
