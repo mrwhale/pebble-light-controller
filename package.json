@@ -12,7 +12,24 @@
         "messageKeys": {
             "KEY_CMD": 1,
             "KEY_ZONE": 2,
-            "KEY_ZONE0": 5
+            "KEY_ZONE0": 5,
+            "KEY_ZONE1": 6,
+            "KEY_ZONE2": 7,
+            "KEY_ZONE3": 8,
+            "KEY_ZONE4": 9,
+            "KEY_ZONE5": 10,
+            "KEY_ZONE6": 11,
+            "KEY_ZONE7": 12,
+            "KEY_ZONE8": 13,
+            "KEY_ZONE9": 14,
+            "ZONE1_NAME": 15,
+            "ZONE2_NAME": 16,
+            "ZONE3_NAME": 17,
+            "ZONE4_NAME": 18,
+            "ZONE5_NAME": 19,
+            "ZONE6_NAME": 20,
+            "ZONE7_NAME": 21,
+            "ZONE8_NAME": 22
         },
         "projectType": "native",
         "resources": {
