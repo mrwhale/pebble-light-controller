@@ -23,22 +23,18 @@
 #define ZONE6_NAME 20
 #define ZONE7_NAME 21
 #define ZONE8_NAME 22
-
 /*
 Pebble app for controlling Limitless led lights via the Light-Controler android app
 By mrwhale https://github.com/mrwhale
 */
-// todo add the ability to read data from phone. need to read in Zone names and display instead of just "zone x"
-//todo test in a colour watch (
 //todo add the colour image in for colour watches
 //todo add feedback for colour watches to change the display of "on" zones to inverse (could do this for aplite?)
-
-static TextLayer *s_weather_layer;
+//static TextLayer *s_weather_layer;
 static Window *s_main_window;
 static MenuLayer *s_menu_layer;
 //static GBitmap *s_menu_icons[NUM_MENU_ICONS];
-static GBitmap *s_background_bitmap;
-static int s_current_icon = 0;
+//static GBitmap *s_background_bitmap;
+//static int s_current_icon = 0;
 enum Settings { setting_screen = 1, setting_date, setting_vibrate };
 //Variables to hold zone names
 char zone_zero[15] = "Colour Global";
@@ -54,17 +50,11 @@ char zone_eight[15] = "Zone 4w";
 
 
 /* 
-Function that receieves data back from somewhere. was used when i needed config.js to get user input. dont need that anymore
-will repurpose to receive data from companion app 
+Function that receieves data back from the companion android app.
 */
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
-  // Store incoming information
-  // static char ip_buffer[8];
-  //static char port_buffer[32];
-  //static char weather_layer_buffer[32];
-
   APP_LOG(APP_LOG_LEVEL_INFO, "Just got a message from the phone!");  
-  // Read tuples for data
+  // Store incoming information. Read tuples for data
   Tuple *zone_zero_tuple = dict_find(iterator, KEY_ZONE0);
   Tuple *zone_one_tuple = dict_find(iterator, KEY_ZONE1);
   Tuple *zone_two_tuple = dict_find(iterator, KEY_ZONE2);
@@ -83,6 +73,8 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   Tuple *zone_six_name = dict_find(iterator, ZONE6_NAME);
   Tuple *zone_seven_name = dict_find(iterator, ZONE7_NAME);
   Tuple *zone_eight_name = dict_find(iterator, ZONE8_NAME);
+  int size = dict_size(iterator);
+  APP_LOG(APP_LOG_LEVEL_INFO, "dict size is %d", size);
 
   //If we receive zone data from the phone app, lets see what they say about it and store it
   // for later use TODO
@@ -173,7 +165,6 @@ static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
   APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
 }
 
-
 static uint16_t menu_get_num_sections_callback(MenuLayer *menu_layer, void *data) {
   return NUM_MENU_SECTIONS;
 }
@@ -210,8 +201,7 @@ static void menu_draw_header_callback(GContext* ctx, const Layer *cell_layer, ui
 Draw the UI to the pebble. This needs lots of work
 */
 static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuIndex *cell_index, void *data) {
-  // Determine which section we're going to draw in
-      // Use the row to specify which item we'll draw   
+  // Determine which section we're going to draw in. 2 sections. 1 colour 1 white. each with 5 zones  
   switch (cell_index->section){
     case 0:
       switch (cell_index->row){
@@ -258,9 +248,6 @@ void send_cmd(int section, int row, int cmd){
   
   DictionaryIterator* dictionaryIterator = NULL;
   app_message_outbox_begin (&dictionaryIterator);
-  
-  //APP_LOG(APP_LOG_LEVEL_INFO, "cell_section %d", section);
-  //APP_LOG(APP_LOG_LEVEL_INFO, "cell_index %d", row);
   switch(section){
     case 0:
       //APP_LOG(APP_LOG_LEVEL_INFO,"send_cmd section 0");
@@ -293,7 +280,7 @@ void send_cmd(int section, int row, int cmd){
       }
       break;
     case 1:
-      APP_LOG(APP_LOG_LEVEL_INFO,"send_cmd section 1");
+      //APP_LOG(APP_LOG_LEVEL_INFO,"send_cmd section 1");
       switch(row){
         case 0:
           dict_write_uint8 (dictionaryIterator, KEY_ZONE, 9);
@@ -323,6 +310,8 @@ void send_cmd(int section, int row, int cmd){
       }
   }
    dict_write_end (dictionaryIterator);
+   //int inbox_size = dict_size(dictionaryIterator);
+   //APP_LOG(APP_LOG_LEVEL_INFO,"Outbox dict size before send %d", inbox_size);
    app_message_outbox_send ();
 }
 
@@ -346,24 +335,13 @@ static void menu_short_click(MenuLayer *menu_layer, MenuIndex *cell_index, void 
     send_cmd(cell_index->section,cell_index->row,1);
 }
 
-
 static void main_window_load(Window *window) {
-  // Here we load the bitmap assets
-  //s_menu_icons[0] = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MENU_ICON_BIG_WATCH);
-  //s_menu_icons[1] = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MENU_ICON_SECTOR_WATCH);
-  //s_menu_icons[2] = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MENU_ICON_BINARY_WATCH);
-
-  // And also load the background
-  //s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BACKGROUND_BRAINS);
-
-  // Now we prepare to initialize the menu layer
+  // Now we prepare to initialize the menu layer 
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_frame(window_layer);
-  //icon_layer = bitmap_layer_create(GRect(82, 0, 61, 61));
-
-  //layer_add_child(window_layer, bitmap_layer_get_layer(icon_layer));
   // Create the menu layer
   s_menu_layer = menu_layer_create(bounds);
+  menu_layer_set_normal_colors(s_menu_layer, PBL_IF_COLOR_ELSE(GColorIcterine, GColorWhite), GColorBlack);
   menu_layer_set_callbacks(s_menu_layer, NULL, (MenuLayerCallbacks){
     .get_num_sections = menu_get_num_sections_callback,
     .get_num_rows = menu_get_num_rows_callback,
@@ -373,7 +351,6 @@ static void main_window_load(Window *window) {
     .select_click = menu_short_click,
     .select_long_click = menu_long_click
   });
-  
 
   // Bind the menu layer's click config provider to the window for interactivity
   menu_layer_set_click_config_onto_window(s_menu_layer, window);
@@ -383,17 +360,12 @@ static void main_window_load(Window *window) {
 static void main_window_unload(Window *window) {
   // Destroy the menu layer
   menu_layer_destroy(s_menu_layer);
-
-  // Cleanup the menu icons
-  //for (int i = 0; i < NUM_MENU_ICONS; i++) {
-    //gbitmap_destroy(s_menu_icons[i]);
-  //}
-
-  gbitmap_destroy(s_background_bitmap);
+  //gbitmap_destroy(s_background_bitmap);
 }
 
 static void init() {
   s_main_window = window_create();  
+  window_set_background_color(s_main_window, PBL_IF_COLOR_ELSE(GColorIcterine, GColorWhite));
   window_set_window_handlers(s_main_window, (WindowHandlers) {
     .load = main_window_load,
     .unload = main_window_unload,
@@ -407,10 +379,9 @@ static void init() {
   app_message_register_outbox_sent(outbox_sent_callback);
 
   // Open AppMessage
-  app_message_open(app_message_inbox_size_maximum(), APP_MESSAGE_OUTBOX_SIZE_MINIMUM);
-  //TODO add initialisation for zone names in persistant storage. read them out if exist. if
-  // they dont we should consider asking the main app for them
-  //If storage for zone name exists, then lets read it in
+  app_message_open(350, 100);
+  //TODO if they dont exist we should consider asking the main app for them
+
   APP_LOG(APP_LOG_LEVEL_INFO, "Reading Zone names in from storage");
   if(persist_exists(ZONE1_NAME)){
     persist_read_string(ZONE1_NAME, zone_one, 15);
@@ -440,7 +411,6 @@ static void init() {
 }
 
 static void deinit() {
-  window_destroy(s_main_window);
   //Write all zone names to storage on de-init
   APP_LOG(APP_LOG_LEVEL_INFO, "Writing zone names to strorage");
   persist_write_string(ZONE1_NAME, zone_one);
@@ -452,6 +422,7 @@ static void deinit() {
   persist_write_string(ZONE6_NAME, zone_six);
   persist_write_string(ZONE7_NAME, zone_seven);
   persist_write_string(ZONE8_NAME, zone_eight);
+  window_destroy(s_main_window);
 }
 
 int main(void) {
