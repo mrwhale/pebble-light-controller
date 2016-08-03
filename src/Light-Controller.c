@@ -37,16 +37,16 @@ static MenuLayer *s_menu_layer;
 //static int s_current_icon = 0;
 enum Settings { setting_screen = 1, setting_date, setting_vibrate };
 //Variables to hold zone names
-char zone_zero[15] = "Colour Global";
-char zone_one[15] = "Zone 1c";
-char zone_two[15] = "Zone 2c";
-char zone_three[15] = "Zone 3c";
-char zone_four[15] = "Zone 4c";
-char zone_nine[15] = "White Global";
-char zone_five[15] = "Zone 1w";
-char zone_six[15] = "Zone 2w";
-char zone_seven[15] = "Zone 3w";
-char zone_eight[15] = "Zone 4w";
+char zone_zero[18] = "Colour Global";
+char zone_one[18] = "Zone 1c";
+char zone_two[18] = "Zone 2c";
+char zone_three[18] = "Zone 3c";
+char zone_four[18] = "Zone 4c";
+char zone_nine[18] = "White Global";
+char zone_five[18] = "Zone 1w";
+char zone_six[18] = "Zone 2w";
+char zone_seven[18] = "Zone 3w";
+char zone_eight[18] = "Zone 4w";
 
 
 /* 
@@ -73,8 +73,8 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   Tuple *zone_six_name = dict_find(iterator, ZONE6_NAME);
   Tuple *zone_seven_name = dict_find(iterator, ZONE7_NAME);
   Tuple *zone_eight_name = dict_find(iterator, ZONE8_NAME);
-  int size = dict_size(iterator);
-  APP_LOG(APP_LOG_LEVEL_INFO, "dict size is %d", size);
+  //int size = dict_size(iterator);
+  //APP_LOG(APP_LOG_LEVEL_INFO, "dict size is %d", size);
 
   //If we receive zone data from the phone app, lets see what they say about it and store it
   // for later use TODO
@@ -310,11 +310,6 @@ void send_cmd(int section, int row, int cmd){
       }
   }
    dict_write_end (dictionaryIterator);
-   APP_LOG(APP_LOG_LEVEL_INFO,"size of cmd %d", sizeof(cmd));
-   APP_LOG(APP_LOG_LEVEL_INFO,"size of KEY %d", sizeof(KEY_ZONE));
-   APP_LOG(APP_LOG_LEVEL_INFO,"size of key zone int %d", sizeof(9));
-   int inbox_size = dict_size(dictionaryIterator);
-   APP_LOG(APP_LOG_LEVEL_INFO,"Outbox dict size before send %d", inbox_size);
    app_message_outbox_send ();
 }
 
@@ -385,29 +380,29 @@ static void init() {
 
   APP_LOG(APP_LOG_LEVEL_INFO, "Reading Zone names in from storage");
   if(persist_exists(ZONE1_NAME)){
-    persist_read_string(ZONE1_NAME, zone_one, 15);
+    persist_read_string(ZONE1_NAME, zone_one, 18);
   }
   if(persist_exists(ZONE2_NAME)){
-    persist_read_string(ZONE2_NAME, zone_two, 15);
+    persist_read_string(ZONE2_NAME, zone_two, 18);
   }
   if(persist_exists(ZONE3_NAME)){
-    persist_read_string(ZONE3_NAME, zone_three, 15);
+    persist_read_string(ZONE3_NAME, zone_three, 18);
   }
   if(persist_exists(ZONE4_NAME)){
-    persist_read_string(ZONE4_NAME, zone_four, 15);
+    persist_read_string(ZONE4_NAME, zone_four, 18);
   }
 
   if(persist_exists(ZONE5_NAME)){
-    persist_read_string(ZONE5_NAME, zone_five, 15);
+    persist_read_string(ZONE5_NAME, zone_five, 18);
   }
   if(persist_exists(ZONE6_NAME)){
-    persist_read_string(ZONE6_NAME, zone_six, 15);
+    persist_read_string(ZONE6_NAME, zone_six, 18);
   }
   if(persist_exists(ZONE7_NAME)){
-    persist_read_string(ZONE7_NAME, zone_seven, 15);
+    persist_read_string(ZONE7_NAME, zone_seven, 18);
   }
   if(persist_exists(ZONE8_NAME)){
-    persist_read_string(ZONE8_NAME, zone_eight, 15);
+    persist_read_string(ZONE8_NAME, zone_eight, 18);
   }
 }
 
