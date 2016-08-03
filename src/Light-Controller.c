@@ -310,11 +310,13 @@ void send_cmd(int section, int row, int cmd){
       }
   }
    dict_write_end (dictionaryIterator);
-   //int inbox_size = dict_size(dictionaryIterator);
-   //APP_LOG(APP_LOG_LEVEL_INFO,"Outbox dict size before send %d", inbox_size);
+   APP_LOG(APP_LOG_LEVEL_INFO,"size of cmd %d", sizeof(cmd));
+   APP_LOG(APP_LOG_LEVEL_INFO,"size of KEY %d", sizeof(KEY_ZONE));
+   APP_LOG(APP_LOG_LEVEL_INFO,"size of key zone int %d", sizeof(9));
+   int inbox_size = dict_size(dictionaryIterator);
+   APP_LOG(APP_LOG_LEVEL_INFO,"Outbox dict size before send %d", inbox_size);
    app_message_outbox_send ();
 }
-
 
 /* 
 Callback function on long press of select key
@@ -325,7 +327,6 @@ static void menu_long_click(MenuLayer *menu_layer, MenuIndex *cell_index, void *
     send_cmd(cell_index->section,cell_index->row,0);
   }
   
-
 /* 
 Callback function on short press of select key
 This will send the phone app an ON command for the selected zone in the menu
