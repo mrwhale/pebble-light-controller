@@ -154,11 +154,11 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
-  APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped! because %02X", reason);
 }
 
 static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
-  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed! because %02X", reason);
 }
 
 static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
@@ -337,7 +337,7 @@ static void main_window_load(Window *window) {
   GRect bounds = layer_get_frame(window_layer);
   // Create the menu layer
   s_menu_layer = menu_layer_create(bounds);
-  menu_layer_set_normal_colors(s_menu_layer, PBL_IF_COLOR_ELSE(GColorIcterine, GColorWhite), GColorBlack);
+  //menu_layer_set_normal_colors(s_menu_layer, PBL_IF_COLOR_ELSE(GColorIcterine, GColorWhite), GColorBlack);
   menu_layer_set_callbacks(s_menu_layer, NULL, (MenuLayerCallbacks){
     .get_num_sections = menu_get_num_sections_callback,
     .get_num_rows = menu_get_num_rows_callback,
@@ -373,6 +373,7 @@ static void init() {
   app_message_register_inbox_dropped(inbox_dropped_callback);
   app_message_register_outbox_failed(outbox_failed_callback);
   app_message_register_outbox_sent(outbox_sent_callback);
+  app_comm_set_sniff_interval(SNIFF_INTERVAL_REDUCED);
 
   // Open AppMessage
   app_message_open(350, 100);
@@ -418,6 +419,9 @@ static void deinit() {
   persist_write_string(ZONE6_NAME, zone_six);
   persist_write_string(ZONE7_NAME, zone_seven);
   persist_write_string(ZONE8_NAME, zone_eight);
+  app_comm_set_sniff_interval(SNIFF_INTERVAL_NORMAL);
+  app_message_deregister_callbacks();
+
   window_destroy(s_main_window);
 }
 
